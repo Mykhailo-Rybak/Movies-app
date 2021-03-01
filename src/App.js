@@ -1,61 +1,29 @@
-import React, {useEffect, useState} from 'react'
-import Movie from "./components/Movie";
-import Logo from '../src/img/mdb.svg'
-import {Link} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import "./App.css";
+import Header from "./components/Header/Header";
+import SimpleBottomNavigation from "./components/MainNav";
+import Movies from "./Pages/Movies/Movies";
+import Series from "./Pages/Series/Series";
+import Trending from "./Pages/Trending/Trending";
+import Search from "./Pages/Search/Search";
 
-const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
-const SEARCH_API = "https://api.themoviedb.org/3/search/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&query=";
-
-const App = () => {
-    const [movies, setMovies] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-
-    useEffect(() => {
-        getMovies(FEATURED_API)
-
-    }, []);
-
-    const getMovies = (API) => {
-        fetch(API).then(res => res.json())
-            .then(data => {
-                setMovies(data.results);
-            })
-    }
-
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
-
-        if (searchTerm) {
-            getMovies(SEARCH_API + searchTerm)
-            setSearchTerm('')
-        }
-
-    }
-    const handleOnChange = (e) => {
-        setSearchTerm(e.target.value)
-    }
-
-    return (
-        <>
-            <header>
-                <Link to='/' >
-                    <img className='logo' src={Logo}/>
-                </Link>
-                <form onSubmit={handleOnSubmit}>
-                    <input className="search" type='search' placeholder='Search' value={searchTerm}
-                           onChange={handleOnChange}
-                    />
-                </form>
-
-            </header>
-            <div className='movie-container'>
-                {movies.map(movie => (
-                    <Movie key={movie.id} {...movie} />
-                ))}
-            </div>
-        </>
-    )
+function App() {
+  return (
+    <BrowserRouter>
+      {/* <Header /> */}
+      <div className="app">
+        <div className='app-container'>
+          <Switch>
+            <Route path="/" component={Trending} exact />
+            <Route path="/movies" component={Movies} />
+            <Route path="/series" component={Series} />
+            <Route path="/search" component={Search} />
+          </Switch>
+        </div>
+      </div>
+      <SimpleBottomNavigation />
+    </BrowserRouter>
+  );
 }
 
-export default App
-
+export default App;
