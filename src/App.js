@@ -10,7 +10,7 @@ import Search from "./Pages/Search/Search";
 function App() {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
+      <Header />
       <div className="app">
         <div className='app-container'>
           <Switch>
